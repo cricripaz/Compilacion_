@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="losMelos" nsURI="http://www.upb.edu/lp/isc/LosMelos" nsPrefix="losMelos">
+  <eClassifiers xsi:type="ecore:EClass" name="Program">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="seccionDefiniciones" upperBound="-1"
+        eType="#//Definiciones" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="seccionEjecuciones" upperBound="-1"
+        eType="#//Ejecuciones" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Definiciones">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Funciones" eSuperTypes="#//Definiciones">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="param" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//Expresion"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Variables" eSuperTypes="#//Definiciones">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//ExpresionVar"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Expresion" eSuperTypes="#//ExprThen #//ExprElse"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LlamadaParametro">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="param" eType="#//ExprParam"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExpresionVar"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Basica" eSuperTypes="#//Expresion"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprString" eSuperTypes="#//ExpresionVar #//Basica #//ElementList">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="val" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprNumber" eSuperTypes="#//Basica"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprInt" eSuperTypes="#//ExpresionVar #//ExprNumber #//ElementList">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="var" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprArithmetic" eSuperTypes="#//ExprNumber #//Ejecuciones">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="simbolo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="val1" eType="#//Expresion"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="val2" eType="#//Expresion"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprParam" eSuperTypes="#//Basica">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LlamadaFuncion" eSuperTypes="#//Expresion #//Ejecuciones">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="namefuncion" eType="#//Funciones"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="param" upperBound="-1"
+        eType="#//Expresion" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprBool" eSuperTypes="#//Expresion #//ExpresionVar #//ElementList #//Ejecuciones">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="var" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ValBool" eSuperTypes="#//ExprBool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CompBool" eSuperTypes="#//ExprBool">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="val3" eType="#//Expresion"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="val4" eType="#//Expresion"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OpBool" eSuperTypes="#//ExprBool">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op1" eType="#//ExprBool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op2" eType="#//ExprBool"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprIf" eSuperTypes="#//Expresion #//Ejecuciones">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="then" eType="#//ExprThen"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="else" eType="#//ExprElse"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprThen"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprElse"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprList" eSuperTypes="#//ExpresionVar #//Ejecuciones">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lista" upperBound="-1"
+        eType="#//Expresion" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprList2" eSuperTypes="#//Expresion">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lista" upperBound="-1"
+        eType="#//Expresion" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementList"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FuncList" eSuperTypes="#//Expresion #//Ejecuciones"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprCar" eSuperTypes="#//FuncList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="list" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprCdr" eSuperTypes="#//FuncList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="list" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprCons" eSuperTypes="#//FuncList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="l1" eType="#//Expresion"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="l2" eType="#//Expresion"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprIsEmpty" eSuperTypes="#//FuncList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="list" eType="#//Expresion"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprLength" eSuperTypes="#//FuncList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="list" eType="#//Expresion"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprPrint" eSuperTypes="#//Basica">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//Expresion"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Ejecuciones"/>
+</ecore:EPackage>

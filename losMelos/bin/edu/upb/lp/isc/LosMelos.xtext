@@ -1,0 +1,132 @@
+grammar edu.upb.lp.isc.LosMelos with org.eclipse.xtext.	common.Terminals
+
+generate losMelos "http://www.upb.edu/lp/isc/LosMelos"
+
+Program:
+    "DEFINICIONES"":" name=ID
+    seccionDefiniciones += Definiciones+
+    "EJECUCIONES"":"
+    seccionEjecuciones += Ejecuciones+
+;
+
+Definiciones:
+	Funciones | Variables 
+;
+Funciones:
+    "(""define"  "(" name = ID  param+=ID* ")" body=Expresion? ")"
+;
+Variables:
+	"(""value" name = ID body= ExpresionVar ")"	
+;
+Expresion:
+    Basica | LlamadaFuncion | ExprBool |ExprIf |FuncList | ExprList2 
+;
+
+LlamadaParametro:
+	param=[ExprParam]
+;
+
+ExpresionVar:
+	ExprInt |ExprString |ExprBool |ExprList
+;
+
+Basica:
+    ExprString  | ExprNumber | ExprParam | ExprPrint
+;
+
+ExprString:
+    val = STRING 
+;
+
+ExprNumber:
+    ExprInt | ExprArithmetic
+;
+
+ExprInt :
+    var = INT
+;
+
+ExprArithmetic:
+    "("simbolo=("+"|"-"|"*"|"/"|"%")  val1=(ExprParam|ExprNumber|LlamadaFuncion) 
+    							     val2=(ExprParam|ExprNumber|LlamadaFuncion)   ")"
+;
+
+ExprParam:
+    name = ID
+;
+
+LlamadaFuncion:
+    "("namefuncion = [Funciones] param+=Expresion*")"
+;
+
+ExprBool :
+    ValBool | CompBool | OpBool
+;
+
+ValBool:
+    var = ("#f" | "#t")
+;
+
+CompBool:
+   "("  var = ("=" | "<" |">"|"<="|">=") val3=(ExprNumber | ExprParam|FuncList) 
+   										 val4=(ExprNumber | ExprParam|FuncList) ")"
+;
+
+OpBool:
+     "(" var =("and" | "or")  op1 = ExprBool  op2= ExprBool")"
+;
+
+ExprIf:
+	"(" "if" condition=(ExprBool | ExprIsEmpty )  then=ExprThen   else=ExprElse  ")"
+;
+
+ExprThen:
+	Expresion
+;
+
+ExprElse:
+	Expresion
+;
+
+ExprList:
+	{ExprList} "(""list" lista += Expresion* ")"
+;
+
+ExprList2:
+	{ExprList2} "(""list" lista += Expresion* ")"
+;
+
+ElementList:
+	ExprInt |ExprString |ExprBool 
+;
+
+FuncList:
+	ExprCar | ExprCdr | ExprCons | ExprIsEmpty | ExprLength
+;
+
+ExprCar:
+	"(" "car" (list =  (ExprList | ExprParam | LlamadaFuncion | ExprCdr)) ")"
+;
+
+ExprCdr:
+	"(""cdr" (list =  (ExprList | ExprParam | LlamadaFuncion )) ")"
+;
+
+ExprCons:
+	"(""cons" (l1 = Expresion) (l2= Expresion) ")"
+;
+
+ExprIsEmpty:
+	"(""empty?" list = (ExprList2 | ExprParam) ")"
+;
+
+ExprLength:
+	"(" "length" list = (ExprList2| ExprParam)  ")"
+;
+
+ExprPrint:
+	"(""println" var = Expresion ")"
+;
+Ejecuciones:
+   ExprArithmetic | ExprBool | LlamadaFuncion |ExprList |ExprIf |FuncList
+;
